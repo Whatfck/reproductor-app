@@ -9,6 +9,7 @@ export interface Song {
     year: number | null;
     duration: string;
     url: string;
+    path: string; // Añadimos la ruta para poder guardar/cargar playlists
     picture?: string;
 }
 
@@ -85,11 +86,12 @@ export function useLibrary() {
                 year: getYear(tags.year),
                 duration: formatDuration(duration),
                 picture: getPictureDataUrl(tags.picture),
+                path: file.webkitRelativePath || file.name,
                 url: URL.createObjectURL(file),
               });
             },
             onError: () => {
-              resolve({ id: Date.now() + index, title: file.name.replace(/\.[^/.]+$/, ""), artist: 'Desconocido', album: 'Desconocido', year: null, duration: formatDuration(duration), url: URL.createObjectURL(file) });
+              resolve({ id: Date.now() + index, title: file.name.replace(/\.[^/.]+$/, ""), artist: 'Desconocido', album: 'Desconocido', year: null, duration: formatDuration(duration), path: file.webkitRelativePath || file.name, url: URL.createObjectURL(file) });
             }
           });
         });
